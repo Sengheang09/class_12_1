@@ -36,6 +36,5 @@ public class Category {
     private LocalDateTime updateAt;
 
     @OneToMany(mappedBy = "category")
-    @Builder.Default
     private List<Product> productList;
 }
