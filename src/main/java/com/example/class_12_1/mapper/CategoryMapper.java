@@ -3,7 +3,9 @@ package com.example.class_12_1.mapper;
 import com.example.class_12_1.dto.Request.CategoryRequest;
 import com.example.class_12_1.dto.Response.CategoryResponse;
 import com.example.class_12_1.entity.Category;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CategoryMapper {
 
     public static CategoryResponse toResponse(Category category) {
@@ -19,9 +21,15 @@ public class CategoryMapper {
 
     public static Category toEntity(CategoryRequest request) {
         if (request == null) return null;
-        return Category.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .build();
+//        return Category.builder()
+//                .name(request.getName())
+//                .description(request.getDescription())
+//                .build();
+
+        Category category = new Category();
+        category.setName(request.getName());
+        category.setDescription(request.getDescription());
+
+        return category;
     }
 }

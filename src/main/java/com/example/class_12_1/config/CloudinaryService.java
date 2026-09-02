@@ -24,7 +24,7 @@ public class CloudinaryService {
             return cloudinary.uploader()
                     .upload(
                             file.getBytes(),
-                            ObjectUtils.asMap("folder", folderName)
+                            ObjectUtils.emptyMap()
             );
         } catch (IOException e) {
             throw new BadRequestException("Failed to upload image to Cloudinary: " + e.getMessage());
