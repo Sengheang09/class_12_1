@@ -13,5 +13,24 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUserId(Long userId);
 
+//    Optional<Order> findById(Long id); order
+    @Query("""
+        SELECT DISTINCT o
+            FROM Order o
+            JOIN FETCH o.user
+            JOIN FETCH orderItem i
+            JOIN FETCH i.product
+            WHERE o.id = :id
+    """)
+    Optional<Order> findByIdWithDetails(Long id);
+
+    @Query("""
+        SELECT DISTINCT o
+            FROM Order o
+            JOIN FETCH o.user
+            JOIN FETCH orderItem i
+            JOIN FETCH i.product
+    """)
+    List<Order> findAllWithDetails();
 
 }

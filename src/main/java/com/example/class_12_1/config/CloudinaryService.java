@@ -16,7 +16,7 @@ public class CloudinaryService {
 
     private final Cloudinary cloudinary;
 
-    public Map uploadFile(MultipartFile file, String folderName) {
+    public Map uploadFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new BadRequestException("File is empty or missing.");
         }

@@ -15,11 +15,18 @@ import java.util.List;
 @Builder
 public class OrderResponse {
     private Long id;
+
     private LocalDateTime orderDate;
+
     private BigDecimal totalAmount;
+
     private String status;
+
     private Long userId;
+
     private String username;
+
     private LocalDateTime updateAt;
+
     private List<OrderItemResponse> orderItems;
 }

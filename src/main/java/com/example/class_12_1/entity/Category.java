@@ -35,6 +35,6 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)
     private List<Product> productList;
 }
