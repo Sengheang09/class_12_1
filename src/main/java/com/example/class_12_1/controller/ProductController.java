@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api/products", "/api/product"})
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -51,7 +51,7 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("Products retrieved successfully for category", products));
     }
 
-    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
             @PathVariable Long id,
             @Valid @ModelAttribute ProductRequest request) {
