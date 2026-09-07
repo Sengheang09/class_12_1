@@ -1,6 +1,5 @@
 package com.example.class_12_1.service.Impl;
 
-import com.cloudinary.Cloudinary;
 import com.example.class_12_1.config.CloudinaryService;
 import com.example.class_12_1.dto.Request.ProductRequest;
 import com.example.class_12_1.dto.Response.ProductResponse;
@@ -23,10 +22,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final CloudinaryService cloudinaryService;
+
     public ProductServiceImpl(
             ProductRepository productRepository,
-            CategoryRepository categoryRepository, CloudinaryService cloudinaryService)
-    {
+            CategoryRepository categoryRepository,
+            CloudinaryService cloudinaryService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.cloudinaryService = cloudinaryService;
@@ -35,16 +35,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse createProduct(ProductRequest request) {
         Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(
-                () -> new ResourceNotFoundException("Category not found with id "+request.getCategoryId())
+                () -> new ResourceNotFoundException("Category not found with id " + request.getCategoryId())
         );
 
-        Map image = cloudinaryService.uploadFile(request.getFile());
+        String imageUrl = null;
+        String publicId = null;
 
-        String imageUrl = (String) image.get("url");
-        String publicId = (String) image.get("public_id");
+        if (request.getFile() != null && !request.getFile().isEmpty()) {
+            Map image = cloudinaryService.uploadFile(request.getFile());
+            imageUrl = (String) image.get("url");
+            publicId = (String) image.get("public_id");
+        }
 
         Product product = ProductMapper.toEntity(request);
-
         product.setCategory(category);
         product.setImageUrl(imageUrl);
         product.setPublicId(publicId);
@@ -55,45 +58,71 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductById(Long id) {
-        return null;
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found with id " + id)
+        );
+        return ProductMapper.toResponse(product);
     }
 
     @Override
     public List<ProductResponse> getAllProducts() {
-
-
-//        return productRepository.findAllWithDetails().stream()
-//                .map( product -> ProductMapper.toResponse(product)).toList();
-
-
         List<Product> productList = productRepository.findAllWithDetails();
         List<ProductResponse> allProductResponseDto = new ArrayList<>();
-        for(Product product : productList){
-
-            ProductResponse productResponseDto;
-            productResponseDto = ProductMapper.toResponse(product);
-
-            allProductResponseDto.add(productResponseDto);
+        for (Product product : productList) {
+            allProductResponseDto.add(ProductMapper.toResponse(product));
         }
-
-//        List<ProductResponse> productResponseList = productList.stream()
-//                .map(product -> ProductMapper.toResponse(product)).toList();
-
         return allProductResponseDto;
     }
 
     @Override
     public List<ProductResponse> getProductsByCategoryId(Long categoryId) {
-        return List.of();
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new ResourceNotFoundException("Category not found with id " + categoryId);
+        }
+        return productRepository.findByCategoryId(categoryId).stream()
+                .map(ProductMapper::toResponse)
+                .toList();
     }
 
     @Override
     public ProductResponse updateProduct(Long id, ProductRequest request) {
-        return null;
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found with id " + id)
+        );
+
+        Category category = categoryRepository.findById(request.getCategoryId()).orElseThrow(
+                () -> new ResourceNotFoundException("Category not found with id " + request.getCategoryId())
+        );
+
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+        product.setStock(request.getStock());
+        product.setCategory(category);
+
+        if (request.getFile() != null && !request.getFile().isEmpty()) {
+            if (product.getPublicId() != null) {
+                cloudinaryService.deleteFile(product.getPublicId());
+            }
+            Map image = cloudinaryService.uploadFile(request.getFile());
+            product.setImageUrl((String) image.get("url"));
+            product.setPublicId((String) image.get("public_id"));
+        }
+
+        Product updated = productRepository.save(product);
+        return ProductMapper.toResponse(updated);
     }
 
     @Override
     public void deleteProduct(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Product not found with id " + id)
+        );
 
+        if (product.getPublicId() != null) {
+            cloudinaryService.deleteFile(product.getPublicId());
+        }
+
+        productRepository.delete(product);
     }
 }
