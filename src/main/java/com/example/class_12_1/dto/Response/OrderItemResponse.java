@@ -11,9 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderItemResponse {
     private Long id;
+
     private Long productId;
+
     private String productName;
+
     private int quantity;
+
     private double price;
+
     private double subtotal;
 }

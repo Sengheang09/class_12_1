@@ -18,7 +18,7 @@ public class OrderResponse {
 
     private LocalDateTime orderDate;
 
-    private BigDecimal totalAmount;
+    private double totalAmount;
 
     private String status;
 

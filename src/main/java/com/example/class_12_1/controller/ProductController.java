@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -24,8 +23,10 @@ public class ProductController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<ProductResponse>> createProduct(
-            @Valid @ModelAttribute ProductRequest request) {
+            @Valid @ModelAttribute ProductRequest request
+    ) {
         ProductResponse response = productService.createProduct(request);
+
         return new ResponseEntity<>(
                 ApiResponse.success("Product created successfully", response),
                 HttpStatus.CREATED

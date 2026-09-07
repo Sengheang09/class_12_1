@@ -26,7 +26,7 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime orderDate;
 
-    private BigDecimal totalAmount;
+    private double totalAmount;
 
     private String status;
 
