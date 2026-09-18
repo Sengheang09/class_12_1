@@ -12,15 +12,7 @@ import java.util.stream.Collectors;
 
 public class OrderMapper {
 
-    public static Order toEntity(OrderRequestDto requestDto) {
-        if (requestDto == null) {
-            return null;
-        }
-        Order order = new Order();
-        order.setStatus(requestDto.getStatus());
-        order.setTotalAmount(requestDto.getTotalAmount());
-        return order;
-    }
+
 
     public static OrderResponseDto toResponseDto(Order order) {
         if (order == null) {

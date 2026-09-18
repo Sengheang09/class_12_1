@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductResponseDto createProduct(ProductRequestDto productRequestDto) throws IOException;
+    ProductResponseDto createProduct(ProductRequestDto productRequestDto);
 
     ProductResponseDto getProductById(Long id);
 

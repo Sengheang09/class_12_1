@@ -19,11 +19,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleBadRequestException(
             BadRequestException ex
     ) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(ApiResponse.error(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage()));
 
-        ApiResponse<Object> apiResponse = ApiResponse.error(ex.getMessage());
-        return new ResponseEntity<>(apiResponse , HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

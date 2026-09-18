@@ -7,23 +7,14 @@ import com.example.project_class111.entity.Product;
 
 public class OrderItemMapper {
 
-    public static OrderItem toEntity(OrderItemRequestDto requestDto) {
-        if (requestDto == null) {
-            return null;
-        }
-        OrderItem orderItem = new OrderItem();
-        orderItem.setPrice(requestDto.getPrice());
-        return orderItem;
-    }
-
     public static OrderItemResponseDto toResponseDto(OrderItem orderItem) {
         if (orderItem == null) {
             return null;
         }
         OrderItemResponseDto responseDto = new OrderItemResponseDto();
         responseDto.setId(orderItem.getId());
-        responseDto.setDescription(orderItem.getDescription());
         responseDto.setPrice(orderItem.getPrice());
+        responseDto.setQuantity(orderItem.getQuantity());
 
         Product product = orderItem.getProduct();
         if (product != null) {

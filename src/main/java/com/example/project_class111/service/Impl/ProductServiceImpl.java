@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final CloudinaryService cloudinaryService;
 
     @Override
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) throws IOException {
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto){
         Category category = categoryRepository.findById(productRequestDto.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("No category found with id " + productRequestDto.getCategoryId()));
 
@@ -38,10 +38,9 @@ public class ProductServiceImpl implements ProductService {
 
         if (productRequestDto.getFile() != null && !productRequestDto.getFile().isEmpty()) {
             Map image = cloudinaryService.upload(productRequestDto.getFile());
-            url = (String) image.get("secure_url");
-            if (url == null) {
-                url = (String) image.get("url");
-            }
+
+            url = (String) image.get("url");
+
             publicId = (String) image.get("public_id");
         }
 
@@ -51,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPublicId(publicId);
 
         Product saved = productRepository.save(product);
+
         return ProductMapper.toProductResponseDto(saved);
     }
 

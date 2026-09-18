@@ -4,7 +4,9 @@ import com.example.project_class111.dto.RequestDto.ProductRequestDto;
 import com.example.project_class111.dto.ResponseDto.ProductResponseDto;
 import com.example.project_class111.entity.Category;
 import com.example.project_class111.entity.Product;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductMapper {
 
     public static Product toEntity(ProductRequestDto requestDto) {
@@ -16,6 +18,7 @@ public class ProductMapper {
         product.setDescription(requestDto.getDescription());
         product.setPrice(requestDto.getPrice());
         product.setStock(requestDto.getStock());
+
         return product;
     }
 

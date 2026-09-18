@@ -17,10 +17,6 @@ public class OrderRequestDto {
     @NotNull(message = "User ID must not be null")
     private Long userId;
 
-    private String status;
-
-    private BigDecimal totalAmount;
-
     @NotEmpty(message = "Order must contain at least one item")
     private List<OrderItemRequestDto> orderItems;
 }
