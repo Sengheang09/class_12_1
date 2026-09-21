@@ -32,6 +32,9 @@ public class DataSeeder {
                 User admin = new User();
                 admin.setUsername("admin");
                 admin.setEmail("admin@gmail.com");
+                admin.setAccountNonLocked(true);
+                admin.setAttempt(0);
+                admin.setLockDate(null);
                 admin.setPassword(passwordEncoder.encode("123456789"));
 
                 admin.getRoles().add(roleUser);

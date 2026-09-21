@@ -2,9 +2,12 @@ package com.example.springsercurityjwt121.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +33,20 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled = true;
+
+    @Column(nullable = false)
+    private int attempt = 0;
+
+    @Column(nullable = false)
+    private boolean accountNonLocked = true;
+
+    public void isAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    @Column(nullable = true)
+    private LocalDateTime lockDate = null;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

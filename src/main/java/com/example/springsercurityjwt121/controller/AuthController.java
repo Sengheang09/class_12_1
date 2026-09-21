@@ -1,5 +1,7 @@
 package com.example.springsercurityjwt121.controller;
 
+import com.example.springsercurityjwt121.dto.LoginRequest;
+import com.example.springsercurityjwt121.dto.LoginResponse;
 import com.example.springsercurityjwt121.dto.MessageResponse;
 import com.example.springsercurityjwt121.dto.RegisterRequest;
 import com.example.springsercurityjwt121.entities.User;
@@ -30,7 +32,12 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.registerUser(request));
+    }
 
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.login(request));
     }
 
 }
