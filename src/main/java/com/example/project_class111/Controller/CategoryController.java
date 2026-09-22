@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new category")
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponseDto>> createCategory(
@@ -29,6 +31,7 @@ public class CategoryController {
         CategoryResponseDto created = categoryService.createCategory(requestDto);
         return new ResponseEntity<>(ApiResponse.success("Category created successfully", created), HttpStatus.CREATED);
     }
+
 
     @Operation(summary = "Get category by ID")
     @GetMapping("/{id}")
@@ -44,6 +47,7 @@ public class CategoryController {
         return ResponseEntity.ok(ApiResponse.success("Categories retrieved successfully", categories));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update category by ID")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponseDto>> updateCategory(
@@ -53,6 +57,7 @@ public class CategoryController {
         return ResponseEntity.ok(ApiResponse.success("Category updated successfully", updated));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete category by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) {
